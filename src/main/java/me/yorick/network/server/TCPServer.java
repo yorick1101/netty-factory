@@ -98,12 +98,12 @@ public class TCPServer implements Server{
 		public void channelRead(ChannelHandlerContext ctx, Object msg) {
 			ByteBuf in = (ByteBuf) msg;
 		    try {
-		        while (in.isReadable()) { // (1)
-		            System.out.print((char) in.readByte());
+		        while (in.isReadable()) {
+		            System.out.println((char) in.readByte());
 		            System.out.flush();
 		        }
 		    } finally {
-		        ReferenceCountUtil.release(msg); // (2)
+		        ReferenceCountUtil.release(msg);
 		    }
 		}
 		

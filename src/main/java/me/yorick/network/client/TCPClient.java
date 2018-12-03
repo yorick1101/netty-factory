@@ -33,8 +33,6 @@ public class TCPClient {
 
 			// Start the client.
 			ChannelFuture f = b.connect("localhost", 1234).sync(); // (5)
-
-			// Wait until the connection is closed.
 			f.channel().closeFuture().sync();
 		} finally {
 			workerGroup.shutdownGracefully();
@@ -53,14 +51,31 @@ public class TCPClient {
 		public void channelActive(ChannelHandlerContext ctx) {
 			System.out.println("channelActive");
 			final ByteBuf msg = ctx.alloc().buffer(1024);
-			msg.writeBytes("Hello".getBytes());
-			final ChannelFuture f = ctx.writeAndFlush(msg);
-			f.addListener(new ChannelFutureListener() {
+			new Thread() {
+				private int count = 0;
 				@Override
-				public void operationComplete(ChannelFuture future) {
-					System.out.println("write complete");
+				public void run() {
+
+					while(!Thread.currentThread().isInterrupted()) {
+						msg.clear();
+						msg.writeBytes(("Hello"+count++).getBytes());
+						final ChannelFuture f = ctx.writeAndFlush(msg);
+						f.addListener(new ChannelFutureListener() {
+							@Override
+							public void operationComplete(ChannelFuture future) {
+								System.out.println("write complete");
+							}
+						});
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
 				}
-			});
+			}.start();
+
 		}
 
 		@Override

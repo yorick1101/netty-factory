@@ -11,12 +11,7 @@ import io.netty.buffer.ByteBuf;
  */
 public abstract class Field<T>{
 
-	protected Field() {
-		
-	}
-	
-	abstract void writeToBuffer(T value, ByteBuf buffer);
-	abstract T readFromBuffer(ByteBuf buffer);
-	abstract int getLength();
+	abstract void writeToBuffer(T value, ByteBuf buffer, int start);
+	abstract T readFromBuffer(ByteBuf buffer, int start);
 	
 }

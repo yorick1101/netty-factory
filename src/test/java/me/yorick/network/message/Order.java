@@ -1,10 +1,10 @@
-package me.yorick.network.message.definition;
+package me.yorick.network.message;
 
 import me.yorick.network.message.DefinitionAnnotation;
 import me.yorick.network.message.ReadField;
 import me.yorick.network.message.WriteField;
 
-@DefinitionAnnotation
+@DefinitionAnnotation(title='O')
 public interface Order {
 
 	@WriteField(name="exchange")
